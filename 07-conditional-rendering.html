@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- if -->
+        <h1 v-if="showIf">Hello World</h1>
+
+        <!-- if, else-if, else -->
+        <p v-if="showElse">This will show if `showElse` is <code>true</code></p>
+        <p v-else-if="showElseIf">This will show if `showElse` is <code>false</code> and `showElseIf` is <code>true</code></p>
+        <p v-else>This will show if `showElse` is <code>false</code></p>
+
+        <!-- if template (group of ifs that don't have extra dom element) -->
+        <template v-if="showTemplate">
+            <h2>This is a template heading</h2>
+            <p>Lorem ipsum dollor</p>
+            <p>Foobar stuff here</p>
+        </template>
+
+        <!-- Keys -->
+        <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username" key="username-input">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address" key="email-input">
+        </template>
+        <select v-model="loginType">
+            <option>username</option>
+            <option>email</option>
+        </select>
+
+        <!-- show -->
+        <p v-show="show">Hello World!</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                showIf: true,
+                showElse: false,
+                showElseIf: true,
+                showTemplate: true,
+                loginType: 'username',
+                show: false
+            }
+        })
+    </script>
+
+</body>
+
+</html>

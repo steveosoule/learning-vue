@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <div id="app">
+        <h2>Text</h2>
+        <p>Message: {{ msg }}</p>
+        <p v-once>This will never change: {{ msg }}</p>
+        <input type="text" v-model="msg">
+
+        <h2>HTML</h2>
+        <p>Using mustaches: {{ rawHtml }}</p>
+        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+        <textarea v-model="rawHtml" rows="5" cols="50"></textarea>
+
+        <h2>Attributes</h2>
+        <div v-bind:id="dynamicId">The id-attribute of this element should be: {{dynamicId}}</div>
+        <div>
+            <button @click="isButtonDisabled = !isButtonDisabled">Toggle Button</button>
+            <button v-bind:disabled="isButtonDisabled">Button</button> The button is disabled: {{isButtonDisabled}}
+        </div>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                msg: 'Hello World',
+                rawHtml: '<span style="color: red">This should be red</span>',
+                dynamicId: 'foobar-1234',
+                isButtonDisabled: true
+            }
+        });
+    </script>
+
+</body>
+
+</html>

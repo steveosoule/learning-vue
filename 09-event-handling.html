@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <div id="example-1">
+        <button v-on:click="counter += 1">Add 1</button>
+        <p>The button above has been clicked {{ counter }} times.</p>
+    </div>
+
+    <script>
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                counter: 0
+            }
+        })
+    </script>
+
+    <hr>
+
+    <h2>Method Event Handlers</h2>
+    <div id="example-2">
+        <!-- `greet` is the name of a method defined below -->
+        <button v-on:click="greet">Greet</button>
+    </div>
+
+    <script>
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                name: 'Vue.js'
+            },
+            // define methods under the `methods` object
+            methods: {
+                greet: function(event) {
+                    // `this` inside methods points to the Vue instance
+                    console.log('Hello ' + this.name + '!')
+                        // `event` is the native DOM event
+                    if (event) {
+                        console.log(event.target.tagName);
+                    }
+                }
+            }
+        })
+
+        // you can invoke methods in JavaScript too
+        example2.greet() // => 'Hello Vue.js!'
+    </script>
+
+    <hr>
+    <h2>Methods in Inline Handlers</h2>
+    <div id="example-3">
+        <button v-on:click="say('hi')">Say hi</button>
+        <button v-on:click="say('what')">Say what</button>
+        <button v-on:click="warn('Form cannot be submitted yet.', $event)">Say warning</button>
+        <input v-on:keyup.13="submit">
+        <input @keyup.enter="submit($event)">
+    </div>
+
+    <script>
+        new Vue({
+            el: '#example-3',
+            methods: {
+                say: function(message) {
+                    console.log(message)
+                },
+                warn: function(message, $event) {
+                    console.warn(message, $event)
+                },
+                submit: function($event) {
+                    console.log('Submitted by: ', $event.target);
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

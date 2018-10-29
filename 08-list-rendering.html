@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <h2>Basic List</h2>
+    <ul id="example-1">
+        <li v-for="item in items">
+            {{item.message }}
+        </li>
+    </ul>
+
+    <script>
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                items: [{
+                    message: 'Foo'
+                }, {
+                    message: 'Bar'
+                }]
+            }
+        });
+    </script>
+
+    <hr>
+    <h2>List with Index</h2>
+    <ul id="example-2">
+        <li v-for="(item, index) in items">
+            {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+    </ul>
+
+    <script>
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                parentMessage: 'Parent',
+                items: [{
+                    message: 'Foo'
+                }, {
+                    message: 'Bar'
+                }]
+            }
+        })
+    </script>
+
+    <hr>
+    <h2>For with Object</h2>
+    <ul id="example-3" class="demo">
+        <li v-for="value in object">
+            {{ value }}
+        </li>
+        <hr>
+        <li v-for="(value, key) in object">
+            {{ key }}: {{ value }}
+        </li>
+        <hr>
+        <li v-for="(value, key, index) in object">
+            {{ index }}. {{ key }}: {{ value }}
+        </li>
+    </ul>
+
+    <script>
+        var example3 = new Vue({
+            el: '#example-3',
+            data: {
+                object: {
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    age: 30
+                }
+            }
+        })
+    </script>
+
+    <hr>
+    <h2>Filtered/Sorted Results with Template</h2>
+    <ul id="example-4">
+        <template v-for="n in evenNumbers">
+            <li>{{ n }}</li>
+            <li>---</li>
+        </template>
+    </ul>
+
+    <script>
+        var example4 = new Vue({
+            el: '#example-4',
+            data: {
+                numbers: [1, 2, 3, 4, 5, 6, 7, 8, 10]
+            },
+            computed: {
+                evenNumbers: function() {
+                    return this.numbers.filter(function(number) {
+                        return number % 2 === 0
+                    })
+                }
+            }
+        })
+    </script>
+
+    <hr>
+    <h2>For with If</h2>
+    <div id="example-5">
+        <ul v-if="todos.length">
+            <li v-for="todo in todos" v-if="!todo.isComplete">
+                {{ todo.name }}
+            </li>
+        </ul>
+        <p v-else>No todos left!</p>
+    </div>
+    <script>
+        var example5 = new Vue({
+            el: '#example-5',
+            data: {
+                todos: [{
+                    name: 'wash clothes',
+                    isComplete: false
+                }, {
+                    name: 'do dishes',
+                    isComplete: true
+                }, {
+                    name: 'email people',
+                    isComplete: false
+                }]
+            }
+        })
+    </script>
+
+    <hr>
+    <h2>For with Components</h2>
+    <div id="todo-list-example">
+        <form v-on:submit.prevent="addNewTodo">
+            <label for="new-todo">Add a todo</label>
+            <input v-model="newTodoText" id="new-todo" placeholder="E.g. Feed the cat">
+            <button>Add</button>
+        </form>
+        <ul>
+            <li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)">
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        Vue.component('todo-item', {
+            template: '\
+            <li>\
+                {{ title }}\
+                <button v-on:click="$emit(\'remove\')">Remove</button>\
+            </li>\
+            ',
+            props: ['title']
+        })
+
+        new Vue({
+            el: '#todo-list-example',
+            data: {
+                newTodoText: '',
+                todos: [{
+                    id: 1,
+                    title: 'Do the dishes',
+                }, {
+                    id: 2,
+                    title: 'Take out the trash',
+                }, {
+                    id: 3,
+                    title: 'Mow the lawn'
+                }],
+                nextTodoId: 4
+            },
+            methods: {
+                addNewTodo: function() {
+                    this.todos.push({
+                        id: this.nextTodoId++,
+                        title: this.newTodoText
+                    })
+                    this.newTodoText = ''
+                }
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>

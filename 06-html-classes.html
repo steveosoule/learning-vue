@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+
+    <div id="app">
+        <p class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }">I have classes from a v-bind:class</p>
+        <p v-bind:class="classObject">I have classes from an object</p>
+        <p v-bind:class="classObject2">I have other classes defined by a computed function</p>
+        <p v-bind:class="[activeClass, errorClass]">This is defined by an array of classes</p>
+        <my-component class="baz boo" v-bind:class="{active: isActive}"></my-component>
+        <p v-bind:style="{ color: activeColor, fontSize: fontSize + 'px'}">This paragraph has inline styles from inline object syntax</p>
+        <p v-bind:style="styleObject">This paragraph has inline styles from a data object</p>
+    </div>
+
+    <script>
+        Vue.component('my-component', {
+            template: '<p class="foo bar">Hi, i am a component class example.</p>'
+        });
+
+        vm = new Vue({
+            el: '#app',
+            data: {
+                isActive: true,
+                hasError: false,
+                classObject: {
+                    active: true,
+                    'text-danger': false
+                },
+                isActive2: true,
+                error2: null,
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                activeColor: 'blue',
+                fontSize: 18,
+                styleObject: {
+                    color: 'red',
+                    fontSize: '13px'
+                }
+            },
+            computed: {
+                classObject2: function() {
+                    return {
+                        active: this.isActive2 && !this.error2,
+                        'text-danger': this.error2 && this.error2.type === 'fatal'
+                    }
+                }
+            }
+        })
+
+        vm.error2 = {
+            message: 'There was a fatal error',
+            type: 'fatal'
+        };
+    </script>
+
+</body>
+
+</html>

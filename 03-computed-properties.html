@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <div id="example">
+        <p>Original message: "{{ message }}"</p>
+        <p>Computed reversed message: "{{ reversedMessage }}"</p>
+        <p>Computed is now: {{ nowComputed }}</p>
+        <p>Method is now: {{ nowMethod() }}</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#example',
+            data: {
+                message: 'Hello'
+            },
+            computed: {
+                // a computed getter
+                reversedMessage: function() {
+                    // `this` points to the vm instance
+                    return this.message.split('').reverse().join('')
+                },
+                nowComputed: function() {
+                    return Date.now()
+                }
+            },
+            methods: {
+                nowMethod: function() {
+                    return Date.now()
+                }
+            }
+        });
+
+        setTimeout(() => {
+            vm.message = 'Hey';
+        }, 2500);
+    </script>
+
+    <hr>
+
+    <div id="demo">{{ fullName }}</div>
+    <script>
+        var vm = new Vue({
+            el: '#demo',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar'
+            },
+            computed: {
+                /* fullName: function() {
+                    return this.firstName + ' ' + this.lastName;
+                } */
+                fullName: {
+                    // getter
+                    get: function() {
+                        return this.firstName + ' ' + this.lastName
+                    },
+                    // setter
+                    set: function(newValue) {
+                        var names = newValue.split(' ')
+                        this.firstName = names[0]
+                        this.lastName = names[names.length - 1]
+                    }
+                }
+            }
+        });
+
+        vm.fullName = 'Steven Soule';
+        console.log('firstName', vm.firstName);
+        console.log('lastName', vm.lastName);
+    </script>
+
+</body>
+
+</html>
