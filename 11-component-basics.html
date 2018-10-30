@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Guide</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <div id="components-demo">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+    </div>
+
+    <script>
+        // Define a new component called button-counter
+        Vue.component('button-counter', {
+            data: function() {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+        });
+
+        new Vue({
+            el: '#components-demo'
+        });
+    </script>
+
+    <hr>
+
+    <h2>Component Example #1</h2>
+
+    <div id="blog-post-demo-1">
+        <blog-post title="My journey with Vue"></blog-post>
+        <blog-post title="Blogging with Vue"></blog-post>
+        <blog-post title="Why Vue is so fun"></blog-post>
+    </div>
+
+    <script>
+        Vue.component('blog-post', {
+            props: ['title'],
+            template: '<h3>{{ title }}</h3>'
+        });
+
+        new Vue({
+            el: '#blog-post-demo-1'
+        });
+    </script>
+
+    <hr>
+
+    <h2>Component Example #2</h2>
+
+    <div id="blog-post-demo-2">
+        <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:title="post.title"></blog-post>
+    </div>
+
+    <script>
+        Vue.component('blog-post', {
+            props: ['title'],
+            template: '<h3>{{ title }}</h3>'
+        });
+
+        new Vue({
+            el: '#blog-post-demo-2',
+            data: {
+                posts: [{
+                    id: 1,
+                    title: 'My journey with Vue'
+                }, {
+                    id: 2,
+                    title: 'Blogging with Vue'
+                }, {
+                    id: 3,
+                    title: 'Why Vue is so fun'
+                }]
+            }
+        });
+    </script>
+
+    <hr>
+
+    <h2>Component Example #3</h2>
+
+    <div id="blog-post-demo-3">
+        <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post">
+        </blog-post>
+    </div>
+
+    <script>
+        Vue.component('blog-post', {
+            props: ['post'],
+            template: '<div class="blog-post"><h3>{{ post.title }}</h3><div v-html="post.content"></div></div>'
+        });
+
+        new Vue({
+            el: '#blog-post-demo-3',
+            data: {
+                posts: [{
+                    id: 1,
+                    title: 'My journey with Vue',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                }, {
+                    id: 2,
+                    title: 'Blogging with Vue',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                }, {
+                    id: 3,
+                    title: 'Why Vue is so fun',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                }]
+            }
+        });
+    </script>
+
+    <hr>
+
+    <h2>Component Example #4</h2>
+
+    <div id="blog-post-demo-4">
+        <div :style="{ fontSize: postFontSize + 'em' }">
+            <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post" v-on:enlarge-text="onEnlargeText"></blog-post>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('blog-post', {
+            props: ['post'],
+            template: `
+                <div class="blog-post">
+                    <h3>{{ post.title }}</h3>
+                    <button v-on:click="$emit('enlarge-text', post.id/10)">
+                        Enlarge text
+                    </button>
+                    <div v-html="post.content"></div>
+                </div>
+            `
+        });
+
+        new Vue({
+            el: '#blog-post-demo-4',
+            data: {
+                posts: [{
+                    id: 1,
+                    title: 'My journey with Vue',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                }, {
+                    id: 2,
+                    title: 'Blogging with Vue',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                }, {
+                    id: 3,
+                    title: 'Why Vue is so fun',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                }],
+                postFontSize: 1,
+            },
+            methods: {
+                onEnlargeText: function(enlargeAmount) {
+                    this.postFontSize += enlargeAmount
+                }
+            }
+        });
+    </script>
+
+    <hr>
+
+    <h2>Component Example #5</h2>
+
+    <div id="blog-post-demo-5">
+        <custom-input v-model="searchText"></custom-input>
+        <custom-input v-model="searchText"></custom-input>
+        <custom-input v-model="searchText"></custom-input>
+    </div>
+
+    <script>
+        Vue.component('custom-input', {
+            props: ['value'],
+            template: `
+                <input v-bind:value="value" data-v-on:input="$emit('input', $event.target.value)">
+            `
+        })
+
+        new Vue({
+            el: '#blog-post-demo-5',
+            data: {
+                searchText: 'Hello World'
+            }
+        });
+    </script>
+
+    <hr>
+
+    <h2>Slots</h2>
+
+    <div id="slot-demo">
+        <alert-box>
+            Something bad happened.
+        </alert-box>
+    </div>
+
+    <script>
+        Vue.component('alert-box', {
+            template: `
+            <div class="demo-alert-box">
+                <strong>Error!</strong>
+                <slot></slot>
+            </div>
+            `
+        });
+
+        new Vue({
+            el: '#slot-demo'
+        });
+    </script>
+
+</body>
+
+</html>
