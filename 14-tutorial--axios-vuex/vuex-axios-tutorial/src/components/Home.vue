@@ -35,6 +35,9 @@ export default {
         return this.wordData.senses[0].definition;
       }
       return "";
+    },
+    words() {
+      return this.$store.state.words;
     }
   },
   methods: {
@@ -55,6 +58,10 @@ export default {
       }
 
       this.wordData = responses[0];
+      let words = this.words;
+      if (!words.filter(word => word.headword === this.word).length > 0) {
+        this.$store.commit("addWord", this.wordData);
+      }
     }
   }
 };

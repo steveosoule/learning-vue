@@ -1,4 +1,4 @@
-# vuex-axios-tutorial
+# vuex-axios-tutorial-2
 
 > A Vue.js project
 

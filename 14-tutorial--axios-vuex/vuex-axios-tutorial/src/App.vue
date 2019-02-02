@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style data-lang="scss">
 body {
   overflow: hidden;
 }

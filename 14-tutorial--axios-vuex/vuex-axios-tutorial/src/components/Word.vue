@@ -27,6 +27,7 @@
     <div class="nav-links">
       <router-link v-bind:to="{ name: 'Home'}">Home</router-link>
       <router-link v-bind:to="{ name: 'WordList'}">Word List</router-link>
+      <a href="#" @click="deleteWord(word)">Delete Word</a>
     </div>
   </div>
 </template>
@@ -37,22 +38,30 @@ export default {
   name: "WordList",
   data() {
     return {
-      word: this.$route.params.id,
+      word: this.$route.params.word,
       wordId: this.$route.params.data.id,
-      partOfSpeech: "",
-      senses: ""
+      senses: "",
+      partOfSpeech: ""
     };
   },
   mounted() {
     this.getWordDetails(this.wordId);
   },
+  computed: {
+    words() {
+      return this.$store.state.words;
+    }
+  },
   methods: {
     async getWordDetails(params) {
       const response = await WordService.getWordDetails(params);
       let data = response.data.result;
-      console.log(data);
       this.partOfSpeech = data.part_of_speech;
       this.senses = data.senses;
+    },
+    deleteWord(word) {
+      this.$store.commit("deleteWord", word);
+      this.$router.push({ name: "Home" });
     }
   }
 };
@@ -119,7 +128,7 @@ export default {
       text-align: center;
       background-color: royalblue;
       -webkit-box-flex: 0;
-      flex: 0 0 47%;
+      flex: 0 0 31%;
       margin: 0 20px;
       box-sizing: border-box;
       display: block;
@@ -138,7 +147,7 @@ export default {
 
   blockquote:before {
     color: #ccc;
-    content: open-quote;
+    content: "\201C";
     font-size: 4em;
     line-height: 0.1em;
     margin-right: 0.25em;
