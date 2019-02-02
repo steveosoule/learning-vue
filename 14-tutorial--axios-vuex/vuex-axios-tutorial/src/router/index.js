@@ -1,7 +1,9 @@
 /* eslint-disable import/no-duplicates */
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Home from '@/components/Home'
+import WordList from '@/components/WordList'
+import Word from '@/components/Word'
 
 Vue.use(Router)
 
@@ -9,8 +11,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/words',
+      name: 'WordList',
+      component: WordList
+    },
+    {
+      path: '/words/word/:id',
+      name: 'Word',
+      component: Word
     }
   ]
 })
